@@ -1,37 +1,16 @@
-import { ApolloServer } from "@apollo/server";
-import { expressMiddleware } from "@apollo/server/express4";
-import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
-import express from "express";
 import http from "http";
+import app from "./config/app.mjs";
+import initGateway from "./config/apollo.mjs";
+import { expressMiddleware } from "@apollo/server/express4";
+import express from "express";
 import cors from "cors";
-import { gql } from "graphql-tag";
 
 const port = process.env.PORT;
-const app = express();
 const httpServer = http.createServer(app);
 
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello() {
-      return "world";
-    },
-  },
-};
-
-const gateway = new ApolloServer({
-  typeDefs,
-  resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-});
+const gateway = initGateway(httpServer);
 await gateway.start();
 
-// gateway.applyMiddleware({ app, path: "/" });
 app.use(
   "/",
   cors(),
@@ -42,4 +21,4 @@ app.use(
 );
 
 await new Promise((resolve) => httpServer.listen({ port }, resolve));
-console.log(`Gateway ready at http://localhost:${port}${gateway.graphqlPath}`);
+console.log(`Gateway ready at http://localhost:${port}`);
