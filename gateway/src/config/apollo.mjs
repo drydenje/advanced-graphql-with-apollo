@@ -1,4 +1,8 @@
-import { ApolloGateway, IntrospectAndCompose } from "@apollo/gateway";
+import {
+  ApolloGateway,
+  IntrospectAndCompose,
+  RemoteGraphQLDataSource,
+} from "@apollo/gateway";
 import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
@@ -8,11 +12,27 @@ function initGateway(httpServer) {
       subgraphs: [{ name: "accounts", url: process.env.ACCOUNTS_ENDPOINT }],
       pollIntervalInMs: 1000,
     }),
+    buildService({ url }) {
+      return new RemoteGraphQLDataSource({
+        url,
+        willSendRequest({ request, context }) {
+          console.log(context);
+          request.http.headers.set(
+            "user",
+            context.user ? JSON.stringify(context.user) : null
+          );
+        },
+      });
+    },
   });
 
   return new ApolloServer({
     gateway,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    context: ({ req }) => {
+      const user = req.user || null;
+      return { user };
+    },
   });
 }
 
