@@ -16,7 +16,7 @@ const port = process.env.PORT;
 const typeDefs = gql(
   readFileSync(resolve(__dirname, "./graphql/schema.graphql"), "utf-8")
 );
-console.log("TEST");
+// console.log("TEST");
 const server = new ApolloServer({
   schema: buildSubgraphSchema({ typeDefs, resolvers }),
   context: ({ req }) => {
@@ -30,4 +30,4 @@ const { url } = await startStandaloneServer(server, {
   context: async ({ req, res }) => ({ token: await req.headers.token }),
   listen: { port },
 });
-// console.log(`Accounts service ready at ${url}`);
+console.log(`Accounts service ready at ${url}`);

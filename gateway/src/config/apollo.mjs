@@ -25,16 +25,19 @@ function initGateway(httpServer) {
       });
     },
   });
-
+  console.log("BAH");
   return new ApolloServer({
+    // const temp = new ApolloServer({
     gateway,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
     context: ({ req }) => {
-      console.log("APOLLO_SERVER REQ:", req);
       const user = req.user || null;
+      console.log("APOLLO_SERVER REQ:", req);
       return { user };
     },
   });
+  // console.log(temp.internals.plugins);
+  // return temp;
 }
 
 export default initGateway;
