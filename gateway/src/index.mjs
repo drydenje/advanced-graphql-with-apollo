@@ -11,18 +11,18 @@ const httpServer = http.createServer(app);
 const gateway = initGateway(httpServer);
 await gateway.start();
 
-console.log(gateway);
+// console.log(gateway);
 
-// app.use(
-//   "/",
-//   cors(),
-//   express.json(),
-//   expressMiddleware(gateway, {
-//     context: async ({ req }) => ({ token: req.headers.token }),
-//   })
-// );
+app.use(
+  "/",
+  cors(),
+  express.json(),
+  expressMiddleware(gateway, {
+    context: async ({ req }) => ({ token: req.headers.token }),
+  })
+);
 
-gateway.applyMiddleware({ app, path: "/" });
+// gateway.applyMiddleware({ app, path: "/" });
 
 await new Promise((resolve) => httpServer.listen({ port }, resolve));
 console.log(`Gateway ready at http://localhost:${port}`);
