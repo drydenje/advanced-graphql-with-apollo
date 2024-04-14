@@ -16,28 +16,28 @@ function initGateway(httpServer) {
       return new RemoteGraphQLDataSource({
         url,
         willSendRequest({ request, context }) {
+          // this is setting 'user' to null
+          // (working as expected)
           request.http.headers.set(
             "user",
-            // is this is setting null properly? the ternary is right
             context.user ? JSON.stringify(context.user) : null
           );
         },
       });
     },
   });
-  console.log("BAH");
+
   return new ApolloServer({
-    // const temp = new ApolloServer({
     gateway,
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-    context: ({ req }) => {
-      const user = req.user || null;
-      console.log("APOLLO_SERVER REQ:", req);
-      return { user };
-    },
+    // context: async ({ req }) => {
+    //   const user = req.user || null;
+
+    //   // this line isn't firing...
+    //   console.log("APOLLO_SERVER REQ:", req);
+    //   return { user };
+    // },
   });
-  // console.log(temp.internals.plugins);
-  // return temp;
 }
 
 export default initGateway;

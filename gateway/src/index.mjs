@@ -18,7 +18,14 @@ app.use(
   cors(),
   express.json(),
   expressMiddleware(gateway, {
-    context: async ({ req }) => ({ token: req.headers.token }),
+    context: async ({ req }) => {
+      // token: req.headers.token
+      const user = req.user || null;
+      // console.log("USER:", user);
+      // this line isn't firing...
+      // console.log("APOLLO_SERVER REQ:", req);
+      return { user };
+    },
   })
 );
 

@@ -20,7 +20,7 @@ const typeDefs = gql(
 const server = new ApolloServer({
   schema: buildSubgraphSchema({ typeDefs, resolvers }),
   context: ({ req }) => {
-    console.log("USER:", req);
+    console.log("THE USER:", req);
     const user = req.headers.user ? JSON.parse(req.headers.user) : null;
     return { user };
   },
