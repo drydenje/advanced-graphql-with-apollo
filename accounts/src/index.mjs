@@ -27,7 +27,10 @@ const server = new ApolloServer({
 });
 
 const { url } = await startStandaloneServer(server, {
-  context: async ({ req, res }) => ({ token: await req.headers.token }),
+  context: async ({ req, res }) => {
+    // console.log("REQQ:", req.headers);
+    return { token: await req.headers.token, user: req.headers.user };
+  },
   listen: { port },
 });
 console.log(`Accounts service ready at ${url}`);
