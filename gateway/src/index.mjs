@@ -20,6 +20,7 @@ app.use(
   expressMiddleware(gateway, {
     context: async ({ req }) => {
       // token: req.headers.token
+      console.log("US:", req.auth);
       const user = req.user || null;
       // console.log("USER:", user);
       // this line isn't firing...

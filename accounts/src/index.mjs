@@ -19,17 +19,23 @@ const typeDefs = gql(
 // console.log("TEST");
 const server = new ApolloServer({
   schema: buildSubgraphSchema({ typeDefs, resolvers }),
-  context: ({ req }) => {
-    console.log("THE USER:", req);
-    const user = req.headers.user ? JSON.parse(req.headers.user) : null;
-    return { user };
-  },
+  // context: ({ req }) => {
+  //   console.log("THE USER:", req);
+  //   const user = req.headers.user ? JSON.parse(req.headers.user) : null;
+  //   return { user };
+  // },
 });
 
 const { url } = await startStandaloneServer(server, {
   context: async ({ req, res }) => {
-    // console.log("REQQ:", req.headers);
-    return { token: await req.headers.token, user: req.headers.user };
+    // console.log("REQQ:", req);
+    // return {
+    //   // token: req.headers.token,
+    //   user: req.headers.user,
+    // };
+    const user = req.headers.user ? JSON.parse(req.headers.user) : null;
+    // console.log("U:", user);
+    return { user };
   },
   listen: { port },
 });
