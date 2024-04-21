@@ -28,7 +28,7 @@ const server = new ApolloServer({
 
 const { url } = await startStandaloneServer(server, {
   context: async ({ req, res }) => {
-    // console.log("REQQ:", req.headers);
+    // console.log("REQQ:", req);
     // return {
     //   // token: req.headers.token,
     //   user: req.headers.user,

@@ -20,9 +20,10 @@ app.use(
   expressMiddleware(gateway, {
     context: async ({ req }) => {
       // token: req.headers.token
-      console.log("US:", req.headers);
+      // console.log("US:", req.headers.user);
+      // console.log("US:", req);
       const user = req.user || null;
-      console.log("USER:", user);
+      // console.log("USER:", user);
       // this line isn't firing...
       // console.log("APOLLO_SERVER REQ:", req);
       return { user };
