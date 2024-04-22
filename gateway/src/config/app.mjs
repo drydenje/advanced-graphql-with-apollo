@@ -8,7 +8,7 @@ const jwtCheck = jwt({
   secret: jwksClient.expressJwtSecret({
     cache: true,
     rateLimit: true,
-    jwkRequestsPerMinute: 5,
+    jwksRequestsPerMinute: 5,
     jwksUri: `${process.env.AUTH0_ISSUER}.well-known/jwks.json`,
   }),
   audience: process.env.AUTH0_AUDIENCE,
@@ -19,6 +19,7 @@ const jwtCheck = jwt({
 
 app.use(jwtCheck, (err, req, res, next) => {
   if (err.code === "invalid_token") {
+    console.log("INVALID TOKEN");
     return next();
   }
   return next(err);

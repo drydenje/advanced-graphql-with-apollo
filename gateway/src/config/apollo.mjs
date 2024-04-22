@@ -16,8 +16,6 @@ function initGateway(httpServer) {
       return new RemoteGraphQLDataSource({
         url,
         willSendRequest({ request, context }) {
-          // this is setting 'user' to null
-          // (working as expected)
           request.http.headers.set(
             "user",
             context.user ? JSON.stringify(context.user) : null

@@ -13,7 +13,7 @@ const resolvers = {
   },
   Query: {
     viewer(parent, args, { user }) {
-      console.log("RESOLVER->USER: ", user);
+      // console.log("RESOLVER->USER: ", user);
       return accounts[0];
     },
   },

@@ -11,30 +11,19 @@ import resolvers from "./graphql/resolvers.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const port = process.env.PORT;
-// console.log("PORT:", port);
 
 const typeDefs = gql(
   readFileSync(resolve(__dirname, "./graphql/schema.graphql"), "utf-8")
 );
-// console.log("TEST");
+
 const server = new ApolloServer({
   schema: buildSubgraphSchema({ typeDefs, resolvers }),
-  // context: ({ req }) => {
-  //   console.log("THE USER:", req);
-  //   const user = req.headers.user ? JSON.parse(req.headers.user) : null;
-  //   return { user };
-  // },
 });
 
 const { url } = await startStandaloneServer(server, {
   context: async ({ req, res }) => {
-    // console.log("REQQ:", req);
-    // return {
-    //   // token: req.headers.token,
-    //   user: req.headers.user,
-    // };
     const user = req.headers.user ? JSON.parse(req.headers.user) : null;
-    // console.log("U:", user);
+
     return { user };
   },
   listen: { port },
