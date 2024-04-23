@@ -1,3 +1,5 @@
+import auth0 from "../config/auth0.mjs";
+
 const accounts = [
   {
     id: "1",
@@ -12,8 +14,9 @@ const resolvers = {
     },
   },
   Query: {
-    viewer(parent, args, { user }) {
-      // console.log("RESOLVER->USER: ", user);
+    async viewer(parent, args, { user }) {
+      const viewer = await auth0.users.get({ id: user.sub });
+      // console.log("RESOLVER->USER: ", viewer);
       return accounts[0];
     },
   },
